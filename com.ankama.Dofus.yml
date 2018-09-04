@@ -1,0 +1,124 @@
+---
+app-id: com.ankama.Dofus
+runtime: org.freedesktop.Platform/i386/1.6
+sdk: org.freedesktop.Sdk/i386/1.6
+
+#it's not necessary, I put it here for fun
+inherit-extensions:
+  - org.freedesktop.Platform.VAAPI.Intel
+
+tags:
+- proprietary
+
+finish-args:
+- "--share=ipc"
+- "--share=network"
+- "--socket=x11"
+- "--device=dri"
+- "--socket=pulseaudio"
+- "--env=PATH=/app/opt/adobe-air-sdk/bin:/app/bin:/usr/bin"
+- "--env=GTK_PATH=/app/lib/gtk-2.0"
+- "--env=G_FILENAME_ENCODING=UTF-8"
+- "--device=all"
+- "--allow=multiarch"
+
+command: "/app/bin/startup.sh"
+
+modules:
+- name: adobe-gtk2
+  config-opts:
+  - --prefix=/app
+  - --libdir=/app/lib
+  - --with-xinput=yes
+  - --localstatedir=/var
+  sources:
+  - type: archive
+    url: https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.32.tar.xz
+    sha256: b6c8a93ddda5eabe3bfee1eb39636c9a03d2a56c7b62828b359bf197943c582e
+
+- name: adobe-gpg-error
+  config-opts:
+  - --prefix=/app
+  - --libdir=/app/lib
+  sources:
+  - type: archive
+    url: ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.32.tar.bz2
+    sha256: c345c5e73cc2332f8d50db84a2280abfb1d8f6d4f1858b9daa30404db44540ca
+
+- name: adobe-gcrypt
+  config-opts:
+  - --prefix=/app
+  - --libdir=/app/lib
+  - --disable-static
+  - --disable-padlock-support
+  sources:
+  - type: archive
+    url: https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.3.tar.bz2
+    sha1: 13bd2ce69e59ab538e959911dfae80ea309636e3
+
+- name: adobe-gnome-keyring
+  config-opts:
+  - --prefix=/app
+  - --libdir=/app/lib
+  - --localstatedir=/var
+  - --disable-static
+  - --libexecdir=/app/lib/gnome-keyring
+  sources:
+  - type: archive
+    url: https://download.gnome.org/sources/libgnome-keyring/3.12/libgnome-keyring-3.12.0.tar.xz
+    sha256: c4c178fbb05f72acc484d22ddb0568f7532c409b0a13e06513ff54b91e947783
+
+- name: adobe-air
+  no-autogen: true
+  buildsystem: simple
+  build-commands:
+  - mkdir /app/opt
+  - cp -R adobe-air-sdk /app/opt/adobe-air-sdk
+  - ln -s /app/opt/adobe-air-sdk/runtimes/air/linux/Adobe\ AIR/ /app/opt/Adobe\ AIR
+  sources:
+  - type: archive
+    url: http://airdownload.adobe.com/air/lin/download/2.6/AdobeAIRSDK.tbz2
+    dest: adobe-air-sdk
+    sha256: 58912fc6797bcbab49de1f4accb4743a72e7b20384bae1babf9242ac88007501
+
+- name: dofus-libraries
+  config-opts:
+  - --prefix=/app
+  - --libdir=/app/lib
+  sources:
+  - type: archive
+    url: https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz
+    sha256: b4635f15b8adccc8ad0934eea485ef59cc4cae24d0f0300a9a941e51974ffcc7
+
+- name: dofus
+  no-autogen: true
+  buildsystem: simple
+  build-commands:
+  - cp -r Dofus /app/Dofus
+  - chmod 766 -R /app/Dofus
+  sources:
+  - type: archive
+    url: http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz
+    sha256: a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296
+  - type: patch
+    path: transition.conf.patch
+    dest: Dofus
+
+- name: air-hack
+  no-autogen: true
+  buildsystem: simple
+  build-commands:
+  - install  -Dm766 air-generic-launcher.sh /app/Dofus/bin/air-generic-launcher.sh
+  - install  -Dm766 air-generic-launcher.sh /app/Dofus/share/reg/bin/air-generic-launcher.sh
+  sources:
+  - type: file
+    path: air-generic-launcher.sh
+
+- name: startup
+  no-autogen: true
+  buildsystem: simple
+  build-commands:
+  - install -Dm766 startup.sh /app/bin/startup.sh
+  sources:
+  - type: file
+    path: startup.sh

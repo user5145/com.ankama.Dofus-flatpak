@@ -1,1 +1,1 @@
-# flatpak-dofus-wrapper
+# flatpak-dofus

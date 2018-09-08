@@ -13,10 +13,7 @@ $ flatpak install flathub org.freedesktop.Sdk/i386/1.6 org.freedesktop.Platform/
 $ flatpak --user remote-add --no-gpg-verify local-repo /path/to/your/local/repo  
   
 - install it  
-$ flatpak --user install local-repo com.ankama.Dofus  
-  
-- run it  
-$ flatpak run com.ankama.Dofus  
+$ flatpak --user install local-repo com.ankama.Dofus   
   
 ## How to remove the app  
 $ flatpak remove com.ankama.Dofus

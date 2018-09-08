@@ -120,6 +120,10 @@ modules:
   buildsystem: simple
   build-commands:
   - install -Dm766 startup.sh /app/bin/startup.sh
+  - install -Dm766 com.ankama.Dofus.desktop /app/share/applications/com.ankama.Dofus.desktop
+  - install -Dm766 /app/Dofus/share/updater_data/icons/game_icon_512x512.png /app/share/icons/hicolor/512x512/apps/com.ankama.Dofus.png
   sources:
   - type: file
     path: startup.sh
+  - type: file
+    path: com.ankama.Dofus.desktop

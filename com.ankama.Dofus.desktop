@@ -1,9 +1,8 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=Dofus
 Exec=/app/bin/startup.sh
-Icon=dofus
+Icon=com.ankama.Dofus
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=Game;Roleplaying
+Categories=Game

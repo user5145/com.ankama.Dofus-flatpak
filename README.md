@@ -5,10 +5,7 @@
 - install runtimes  
 $ flatpak install flathub org.freedesktop.Sdk/i386/1.6 org.freedesktop.Platform/i386/1.6  
   
-- create your local repo  
-$ mkdir /path/to/your/local/repo    
-  
-- build it and put in the repository (with root privilages)  
+- build it create a repository and put in the repository (run with root privileges)  
 \# flatpak-builder --repo=/path/to/your/local/repo --force-clean build-dir com.ankama.Dofus.yml  
 
 - register the repo  

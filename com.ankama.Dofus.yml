@@ -21,6 +21,7 @@ finish-args:
 - "--env=G_FILENAME_ENCODING=UTF-8"
 - "--device=all"
 - "--allow=multiarch"
+- "--persist=.appdata"
 
 command: "/app/bin/startup.sh"
 

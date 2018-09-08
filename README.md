@@ -27,3 +27,6 @@ $ flatpak remote-delete local-repo
 
 - update  
 $ flatpak update
+
+This project uses hagabaka's transition.conf.patch and air-generic-launcher.sh.
+Thanks to him for his aur version of dofus

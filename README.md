@@ -1,7 +1,8 @@
-# flatpak-dofus
+# flatpak-dofus  
+## Major issues  
+- no sound  
 
-# How to install (accordingly to the docs)
-
+## How to install (accordingly to the docs)  
 - install runtimes  
 $ flatpak install flathub org.freedesktop.Sdk/i386/1.6 org.freedesktop.Platform/i386/1.6  
   
@@ -15,4 +16,10 @@ $ flatpak --user remote-add --no-gpg-verify local-repo /path/to/your/local/repo
 $ flatpak --user install local-repo com.ankama.Dofus  
   
 - run it  
-$ flatpak run com.ankama.Dofus
+$ flatpak run com.ankama.Dofus  
+  
+## How to remove the app  
+$ flatpak remove com.ankama.Dofus
+
+## How to remove the repo  
+$ flatpak remote-delete local-repo

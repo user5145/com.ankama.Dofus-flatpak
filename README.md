@@ -12,10 +12,10 @@ $ mkdir /path/to/your/local/repo
 \# flatpak-builder --repo=/path/to/your/local/repo --force-clean build-dir com.ankama.Dofus.yml  
 
 - register the repo  
-$ flatpak remote-add --no-gpg-verify local-repo /path/to/your/local/repo  
+$ flatpak --user remote-add --no-gpg-verify local-repo /path/to/your/local/repo  
   
 - install it  
-$ flatpak install local-repo com.ankama.Dofus  
+$ flatpak --user install local-repo com.ankama.Dofus  
   
 - run it  
 $ flatpak run com.ankama.Dofus

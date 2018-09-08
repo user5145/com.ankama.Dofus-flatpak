@@ -19,4 +19,11 @@ $ flatpak --user install local-repo com.ankama.Dofus
 $ flatpak remove com.ankama.Dofus
 
 ## How to remove the repo  
-$ flatpak remote-delete local-repo
+$ flatpak remote-delete local-repo  
+
+## How to update
+- build it and put in the repository (run with root privileges)  
+\# flatpak-builder --repo=/path/to/your/local/repo --force-clean build-dir com.ankama.Dofus.yml  
+
+- update  
+$ flatpak update

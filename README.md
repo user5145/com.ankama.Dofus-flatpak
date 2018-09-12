@@ -1,4 +1,4 @@
-# flatpak-dofus  
+# dofus-flatpak-wrapper  
 ## Major issues  
 - no sound  
 

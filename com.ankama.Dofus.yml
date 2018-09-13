@@ -3,9 +3,8 @@ app-id: com.ankama.Dofus
 runtime: org.freedesktop.Platform/i386/1.6
 sdk: org.freedesktop.Sdk/i386/1.6
 
-#it's not necessary, I put it here for fun
 inherit-extensions:
-  - org.freedesktop.Platform.VAAPI.Intel
+  - org.freedesktop.Platform.ffmpeg
 
 tags:
 - proprietary

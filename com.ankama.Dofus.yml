@@ -3,8 +3,15 @@ app-id: com.ankama.Dofus
 runtime: org.freedesktop.Platform/i386/1.6
 sdk: org.freedesktop.Sdk/i386/1.6
 
-inherit-extensions:
-  - org.freedesktop.Platform.ffmpeg
+add-extensions:
+  org.freedesktop.Platform.ffmpeg:
+    version: "1.6"
+    directory: extensions
+    add-ld-path: lib
+    merge-dirs: lib/ffmpeg
+    subdirectories: true
+    no-auto-download: false
+    autodelete: true
 
 tags:
 - proprietary
@@ -128,3 +135,5 @@ modules:
     path: startup.sh
   - type: file
     path: com.ankama.Dofus.desktop
+  post-install:
+  - mkdir -p /app/extensions

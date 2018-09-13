@@ -69,12 +69,14 @@ modules:
     url: https://download.gnome.org/sources/libgnome-keyring/3.12/libgnome-keyring-3.12.0.tar.xz
     sha256: c4c178fbb05f72acc484d22ddb0568f7532c409b0a13e06513ff54b91e947783
 
+# flatpak complains about permissions so we/I use chmod
 - name: adobe-air
   no-autogen: true
   buildsystem: simple
   build-commands:
-  - mkdir /app/opt
+  - mkdir -p /app/opt
   - cp -R adobe-air-sdk /app/opt/adobe-air-sdk
+  - chmod 755 -R /app/opt
   - ln -s /app/opt/adobe-air-sdk/runtimes/air/linux/Adobe\ AIR/ /app/opt/Adobe\ AIR
   sources:
   - type: archive

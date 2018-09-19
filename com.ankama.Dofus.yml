@@ -1,10 +1,10 @@
 ---
 app-id: com.ankama.Dofus
-runtime: org.freedesktop.Platform/i386/1.6
-sdk: org.freedesktop.Sdk/i386/1.6
+runtime: org.winepak.Platform/i386/3.0
+sdk: org.winepak.Sdk/i386/3.0
 
 add-extensions:
-  org.freedesktop.Platform.ffmpeg:
+  org.freedesktop.Platform.ffmpeg/i386:
     version: "1.6"
     directory: extensions
     add-ld-path: lib
@@ -109,19 +109,6 @@ modules:
   - type: archive
     url: http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz
     sha256: a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296
-  - type: patch
-    path: transition.conf.patch
-    dest: Dofus
-
-- name: air-hack
-  no-autogen: true
-  buildsystem: simple
-  build-commands:
-  - install  -Dm766 air-generic-launcher.sh /app/Dofus/bin/air-generic-launcher.sh
-  - install  -Dm766 air-generic-launcher.sh /app/Dofus/share/reg/bin/air-generic-launcher.sh
-  sources:
-  - type: file
-    path: air-generic-launcher.sh
 
 - name: startup
   no-autogen: true

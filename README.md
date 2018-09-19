@@ -1,7 +1,6 @@
 # dofus-flatpak-wrapper  
 ## Major issues  
 - no sound  
-- better performance can be achieved by using wine (winepak).
 
 ## How to install/update (accordingly to the docs)  
 - install runtimes  

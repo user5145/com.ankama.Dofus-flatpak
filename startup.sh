@@ -11,6 +11,4 @@ if [[ ! -f /var/data/Dofus/Dofus ]]; then
   install -dm777 "/var/data/Dofus/share/reg/bin";
 fi
 
-#I hope that pwd can resolve sound issues
-pwd=/var/data/Dofus game=/var/data/Dofus/Dofus 
-/usr/bin/padsp "$game" "$@"
+pwd=/var/data/Dofus /var/data/Dofus/Dofus "$@"

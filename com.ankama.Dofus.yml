@@ -3,15 +3,13 @@ app-id: com.ankama.Dofus
 runtime: org.winepak.Platform/i386/3.0
 sdk: org.winepak.Sdk/i386/3.0
 
+#I guess it needs netapi which is disabled in winepak
 add-extensions:
-  org.freedesktop.Platform.ffmpeg/i386:
-    version: "1.6"
-    directory: extensions
+  org.winepak.Platform.Wine.Compat32:
+    directory: wine
+    version: 3.8-staging
     add-ld-path: lib
-    merge-dirs: lib/ffmpeg
-    subdirectories: true
-    no-auto-download: false
-    autodelete: true
+    no-autodownload: false
 
 tags:
 - proprietary
@@ -22,7 +20,7 @@ finish-args:
 - "--socket=x11"
 - "--device=dri"
 - "--socket=pulseaudio"
-- "--env=PATH=/app/opt/adobe-air-sdk/bin:/app/bin:/usr/bin"
+- "--env=PATH=/app/wine/bin:/app/opt/adobe-air-sdk/bin:/app/bin:/usr/bin"
 - "--env=GTK_PATH=/app/lib/gtk-2.0"
 - "--env=G_FILENAME_ENCODING=UTF-8"
 - "--device=all"
@@ -32,6 +30,11 @@ finish-args:
 command: "/app/bin/startup.sh"
 
 modules:
+- name: setup-wine
+  buildsystem: simple
+  build-commands:
+  - mkdir -p /app/wine
+
 - name: adobe-gtk2
   config-opts:
   - --prefix=/app
@@ -122,5 +125,3 @@ modules:
     path: startup.sh
   - type: file
     path: com.ankama.Dofus.desktop
-  post-install:
-  - mkdir -p /app/extensions

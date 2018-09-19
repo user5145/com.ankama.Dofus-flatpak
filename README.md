@@ -1,6 +1,4 @@
-# dofus-flatpak-wrapper  
-## Major issues  
-- no sound  
+# dofus-flatpak-wrapper   
 
 ## How to install/update (accordingly to the docs)  
 - install runtimes  

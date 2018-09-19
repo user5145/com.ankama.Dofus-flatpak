@@ -2,7 +2,7 @@
 
 ## How to install/update (accordingly to the docs)  
 - install runtimes  
-$ flatpak install flathub org.freedesktop.Sdk/i386/1.6 org.freedesktop.Platform/i386/1.6  
+$ flatpak install flathub org.winepak.Platform/i386/3.0 org.winepak.Sdk/i386/3.0  
   
 - build it and install/update  
 $ flatpak-builder build-dir  com.ankama.Dofus.yml --force-clean --user --install   

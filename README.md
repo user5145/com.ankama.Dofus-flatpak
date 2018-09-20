@@ -2,7 +2,7 @@
 
 ## How to install/update (accordingly to the docs)  
 - install runtimes  
-$ flatpak install flathub org.winepak.Platform/i386/3.0 org.winepak.Sdk/i386/3.0  
+$ flatpak install flathub org.winepak.Platform/i386/3.0 org.winepak.Sdk/i386/3.0  org.winepak.Platform.Wine.Compat32//3.8-staging
   
 - build it and install/update  
 $ flatpak-builder build-dir  com.ankama.Dofus.yml --force-clean --user --install   
@@ -11,5 +11,5 @@ $ flatpak-builder build-dir  com.ankama.Dofus.yml --force-clean --user --install
 $ flatpak remove com.ankama.Dofus
 
 ## About
-This project uses hagabaka's transition.conf.patch and air-generic-launcher.sh.
-Thanks to him for his aur version of dofus
+This project used hagabaka's transition.conf.patch and air-generic-launcher.sh from AUR.
+Now It uses Ryuto-Hirotaka's icon from https://www.deviantart.com/ryuto-hirotaka/art/Dofus-Icon-134414693

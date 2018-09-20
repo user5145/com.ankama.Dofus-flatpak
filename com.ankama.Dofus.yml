@@ -26,7 +26,6 @@ finish-args:
 - "--env=G_FILENAME_ENCODING=UTF-8"
 - "--device=all"
 - "--allow=multiarch"
-- "--persist=.appdata"
 - "--extra-data=dofus.tar.gz:a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296:12821292:12821292:http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz"
 
 command: "start"

@@ -1,9 +1,10 @@
 ---
+#dofus' binaries are still 32bit only
 app-id: com.ankama.Dofus
 runtime: org.winepak.Platform/i386/3.0
 sdk: org.winepak.Sdk/i386/3.0
 
-#I guess it needs netapi which is disabled in winepak
+#I guess it needs netapi which is disabled in winepak 3.0
 add-extensions:
   org.winepak.Platform.Wine.Compat32:
     directory: wine
@@ -26,8 +27,16 @@ finish-args:
 - "--device=all"
 - "--allow=multiarch"
 - "--persist=.appdata"
+- "--extra-data=dofus.tar.gz:a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296:12821292:12821292:http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz"
 
-command: "/app/bin/startup.sh"
+command: "start"
+
+build-options:
+  cflags: -O2 -fstack-protector-strong
+  cxxflags: -O2 -fstack-protector-strong
+  ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
+  prefix: "/app"
+  libdir: "/app/lib"
 
 modules:
 - name: setup-wine
@@ -35,35 +44,49 @@ modules:
   build-commands:
   - mkdir -p /app/wine
 
-- name: dofus-libraries
-  config-opts:
-  - --prefix=/app
-  - --libdir=/app/lib
+
+- name: libpng12
   sources:
   - type: archive
     url: https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz
     sha256: b4635f15b8adccc8ad0934eea485ef59cc4cae24d0f0300a9a941e51974ffcc7
 
+
+#(flatpak 1.0.2)per user installacion cannot be handled by apply_extra
 - name: dofus
   no-autogen: true
   buildsystem: simple
   build-commands:
-  - cp -r Dofus /app/Dofus
-  - chmod 766 -R /app/Dofus
+  - install -d /app/bin
+  - install -Dm555 user-install /app/bin
+  - install -Dm555 start /app/bin
   sources:
-  - type: archive
-    url: http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz
-    sha256: a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296
+  - type: script
+    dest-filename: user-install
+    commands:
+      - "tar -xf /app/extra/dofus.tar.gz -C /var/data"
+      - "chmod 777 /var/data/Dofus"
 
-- name: startup
+
+  - type: script
+    dest-filename: start
+    commands:
+      - 'if [[ ! -f /var/data/Dofus/Dofus ]]; then'
+      - '  user-install'
+      - 'fi'
+      - 'pwd=/var/data/Dofus /var/data/Dofus/Dofus "$@"'
+
+
+- name: resources
   no-autogen: true
   buildsystem: simple
   build-commands:
-  - install -Dm766 startup.sh /app/bin/startup.sh
-  - install -Dm766 com.ankama.Dofus.desktop /app/share/applications/com.ankama.Dofus.desktop
-  - install -Dm766 /app/Dofus/share/updater_data/icons/game_icon_512x512.png /app/share/icons/hicolor/512x512/apps/com.ankama.Dofus.png
+  - install -d /app/share/applications
+  - install -Dm555 com.ankama.Dofus.desktop /app/share/applications
+  - install -d /app/share/icons/hicolor/256x256/apps/
+  - install -Dm555 com.ankama.Dofus.png /app/share/icons/hicolor/256x256/apps/com.ankama.Dofus.png
   sources:
   - type: file
-    path: startup.sh
-  - type: file
     path: com.ankama.Dofus.desktop
+  - type: file
+    path: com.ankama.Dofus.png

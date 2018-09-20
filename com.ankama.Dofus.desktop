@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Dofus
-Exec=/app/bin/startup.sh
+Exec=start
 Icon=com.ankama.Dofus
 Terminal=false
 Type=Application

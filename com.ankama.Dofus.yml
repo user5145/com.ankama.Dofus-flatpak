@@ -51,7 +51,7 @@ modules:
     sha256: b4635f15b8adccc8ad0934eea485ef59cc4cae24d0f0300a9a941e51974ffcc7
 
 
-#(flatpak 1.0.2)per user installacion cannot be handled by apply_extra
+#(flatpak 1.0.2)per user installation cannot be handled by apply_extra
 - name: dofus
   no-autogen: true
   buildsystem: simple

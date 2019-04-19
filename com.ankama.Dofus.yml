@@ -23,8 +23,8 @@ finish-args:
 command: "start"
 
 build-options:
-  cflags: -O2 -fstack-protector-strong
-  cxxflags: -O2 -fstack-protector-strong
+  cflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
+  cxxflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
   ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
   prefix: "/app"
   libdir: "/app/lib"

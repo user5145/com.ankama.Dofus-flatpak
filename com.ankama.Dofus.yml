@@ -4,14 +4,6 @@ app-id: com.ankama.Dofus
 runtime: org.winepak.Platform/i386/3.0
 sdk: org.winepak.Sdk/i386/3.0
 
-#I guess it needs netapi which is disabled in winepak 3.0
-add-extensions:
-  org.winepak.Platform.Wine.Compat32:
-    directory: wine
-    version: 3.8-staging
-    add-ld-path: lib
-    no-autodownload: false
-
 tags:
 - proprietary
 
@@ -38,18 +30,37 @@ build-options:
   libdir: "/app/lib"
 
 modules:
-- name: setup-wine
-  buildsystem: simple
-  build-commands:
-  - mkdir -p /app/wine
-
+- name: wine-win32
+  config-opts:
+  - --disable-win64
+  - --disable-win16
+  - --disable-tests
+  - --with-x
+  - --with-ldap
+  - --with-netapi
+  - --without-cups
+  - --without-curses
+  - --without-capi
+  - --without-glu
+  - --without-gphoto
+  - --without-gsm
+  - --without-hal
+  - --without-opencl
+  - --without-pcap
+  - --without-udev
+  cleanup:
+  - /app/wine/app/wine/share/man
+  - /app/wine/share/applications
+  sources:
+  - type: archive
+    url: https://dl.winehq.org/wine/source/4.0/wine-4.0.tar.xz
+    sha256: 6736cdee95b2b8bb021ec0c19497ed8cad5ae2c8bfdb7ab5dc687ff92a480d4d
 
 - name: libpng12
   sources:
   - type: archive
     url: https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz
     sha256: b4635f15b8adccc8ad0934eea485ef59cc4cae24d0f0300a9a941e51974ffcc7
-
 
 #(flatpak 1.0.2)per user installation cannot be handled by apply_extra
 - name: dofus
@@ -66,7 +77,6 @@ modules:
       - "tar -xf /app/extra/dofus.tar.gz -C /var/data"
       - "chmod 777 /var/data/Dofus"
 
-
   - type: script
     dest-filename: start
     commands:
@@ -74,7 +84,6 @@ modules:
       - '  user-install'
       - 'fi'
       - 'pwd=/var/data/Dofus /var/data/Dofus/Dofus "$@"'
-
 
 - name: resources
   no-autogen: true

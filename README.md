@@ -2,7 +2,7 @@
 
 ## How to install/update (accordingly to the docs)  
 - install runtimes  
-$ flatpak install winepak org.winepak.Platform/i386/3.0 org.winepak.Sdk/i386/3.0  org.winepak.Platform.Wine.Compat32//3.8-staging
+$ flatpak install winepak org.winepak.Platform/i386/3.0 org.winepak.Sdk/i386/3.0 
   
 - build it and install/update  
 $ flatpak-builder build-dir  com.ankama.Dofus.yml --force-clean --user --install   

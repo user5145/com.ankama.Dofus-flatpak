@@ -11,5 +11,5 @@ $ flatpak-builder build-dir  com.ankama.Dofus.yml --force-clean --user --install
 $ flatpak remove com.ankama.Dofus
 
 ## About
-This project used hagabaka's transition.conf.patch and air-generic-launcher.sh from AUR.
-Now It uses Ryuto-Hirotaka's icon from https://www.deviantart.com/ryuto-hirotaka/art/Dofus-Icon-134414693
+This project uses: Ryuto-Hirotaka's icon from https://www.deviantart.com/ryuto-hirotaka/art/Dofus-Icon-134414693  
+This project has used: hagabaka's transition.conf.patch and air-generic-launcher.sh from AUR.

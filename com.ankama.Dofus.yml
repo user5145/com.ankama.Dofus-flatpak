@@ -16,6 +16,9 @@ finish-args:
 - "--env=PATH=/app/wine/bin:/app/bin:/usr/bin"
 - "--env=GTK_PATH=/app/lib/gtk-2.0"
 - "--env=G_FILENAME_ENCODING=UTF-8"
+- "--env=DXVK_HUD=0"
+- "--env=VK_INSTANCE_LAYERS="
+- "--env=VK_LAYER_MESA_OVERLAY_POSITION=top-right"
 - "--device=all"
 - "--allow=multiarch"
 - "--extra-data=dofus.tar.gz:a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296:12821292:12821292:http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz"
@@ -74,6 +77,8 @@ modules:
     dest-filename: user-install
     commands:
       - "tar -xf /app/extra/dofus.tar.gz -C /var/data"
+      - wineboot
+      -
       - "chmod 777 /var/data/Dofus"
 
   - type: script

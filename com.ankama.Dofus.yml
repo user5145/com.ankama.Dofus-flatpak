@@ -14,20 +14,21 @@ finish-args:
 - "--device=dri"
 - "--socket=pulseaudio"
 - "--env=PATH=/app/wine/bin:/app/bin:/usr/bin"
-- "--env=GTK_PATH=/app/lib/gtk-2.0"
-- "--env=G_FILENAME_ENCODING=UTF-8"
-- "--env=DXVK_HUD=0"
-- "--env=VK_INSTANCE_LAYERS="
-- "--env=VK_LAYER_MESA_OVERLAY_POSITION=top-right"
 - "--device=all"
 - "--allow=multiarch"
 - "--extra-data=dofus.tar.gz:a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296:12821292:12821292:http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz"
-
+- "--env=GTK_PATH=/app/lib/gtk-2.0"
+- "--env=G_FILENAME_ENCODING=UTF-8"
+- "--env=DXVK_STATE_CACHE=1"
+- "--env=DXVK_STATE_CACHE_PATH=/var/data/cache_dxvk"
+- "--env=DXVK_HOME=/app/dxvk"
+- "--env=DXVK_HUD=0"
+- "--env=__GL_THREADED_OPTIMIZATIONS=0"
 command: "start"
 
 build-options:
-  cflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
-  cxxflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=1 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
+  cflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
+  cxxflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
   ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
   prefix: "/app"
   libdir: "/app/lib"
@@ -65,6 +66,17 @@ modules:
     url: https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz
     sha256: b4635f15b8adccc8ad0934eea485ef59cc4cae24d0f0300a9a941e51974ffcc7
 
+- name: dxvk
+  buildsystem: simple
+  build-commands:
+  - install -d /app/dxvk
+  - cp -R ./* "${DXVK_HOME}/"
+  - ls . /app/dxvk
+  sources:
+  - type: archive
+    url: https://github.com/doitsujin/dxvk/releases/download/v1.2/dxvk-1.2.tar.gz
+    sha256: 414751a810143ced34d1f4f0eb2a40e79b4c9726318994b244b70d1b3a6f8b32
+
 #(flatpak 1.0.2)per user installation cannot be handled by apply_extra
 - name: dofus
   buildsystem: simple
@@ -72,22 +84,56 @@ modules:
   - install -d /app/bin
   - install -Dm555 user-install /app/bin
   - install -Dm555 start /app/bin
+  - install -Dm555 script-clean-windows-ver /app/bin
+  - install -Dm555 script-set-windows-ver /app/bin
+  - install -Dm555 update-dxvk /app/bin
   sources:
   - type: script
     dest-filename: user-install
     commands:
-      - "tar -xf /app/extra/dofus.tar.gz -C /var/data"
-      - wineboot
-      -
-      - "chmod 777 /var/data/Dofus"
-
+    - "tar -xf /app/extra/dofus.tar.gz -C /var/data"
+    - wineboot
+    - script-clean-windows-ver
+    - script-set-windows-ver
+    - update-dxvk
+    -
+    - "chmod 777 /var/data/Dofus"
+  - type: script
+    dest-filename: script-clean-windows-ver
+    commands:
+    - echo "Clear Windows Version"
+    - wine64 reg delete 'HKLM\Software\Microsoft\Windows\CurrentVersion' /v SubVersionNumber /f
+    - wine64 reg delete 'HKLM\Software\Microsoft\Windows\CurrentVersion' /v VersionNumber /f
+    - wine64 reg delete 'HKLM\Software\Microsoft\Windows NT\CurrentVersion' /v CSDVersion /f
+    - wine64 reg delete 'HKLM\Software\Microsoft\Windows NT\CurrentVersion' /v CurrentBuildNumber /f
+    - wine64 reg delete 'HKLM\Software\Microsoft\Windows NT\CurrentVersion' /v CurrentVersion /f
+    - wine64 reg delete 'HKLM\System\CurrentControlSet\Control\ProductOptions' /v ProductType /f
+    - wine64 reg delete 'HKLM\System\CurrentControlSet\Control\ServiceCurrent' /v OS /f
+    - wine64 reg delete 'HKLM\System\CurrentControlSet\Control\Windows' /v CSDVersion /f
+    - wine64 reg delete 'HKCU\Software\Wine' /v Version /f
+    - wine64 reg delete 'HKLM\System\CurrentControlSet\Control\ProductOptions' /v ProductType /f
+  - type: script
+    dest-filename: script-set-windows-ver
+    commands:
+    - echo "Set Windows Version to 8.1 (9)"
+    - wine64 reg add 'HKLM\System\CurrentControlSet\Control\ProductOptions' /v ProductType /d 'WinNT' /f
+    - wine64 reg add 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion' /v CSDVersion /d '' /f
+    - wine64 reg add 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion' /v CurrentBuildNumber /d '9600' /f
+    - wine64 reg add 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion' /v CurrentVersion /d '6.3' /f
+    - wine64 reg add 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Windows' /v CSDVersion /t REG_DWORD /d 00000000 /f
+  - type: script
+    dest-filename: update-dxvk
+    commands:
+    - echo "reinstalling dxvk"
+    - ${DXVK_HOME}/setup_dxvk.sh uninstall
+    - ${DXVK_HOME}/setup_dxvk.sh install
   - type: script
     dest-filename: start
     commands:
-      - 'if [[ ! -f /var/data/Dofus/Dofus ]]; then'
-      - '  user-install'
-      - 'fi'
-      - 'pwd=/var/data/Dofus /var/data/Dofus/Dofus "$@"'
+    - 'if [[ ! -f /var/data/Dofus/Dofus ]]; then'
+    - '  user-install'
+    - 'fi'
+    - 'pwd=/var/data/Dofus /var/data/Dofus/Dofus "$@"'
 
 - name: resources
   buildsystem: simple

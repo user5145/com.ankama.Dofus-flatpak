@@ -133,7 +133,8 @@ modules:
     - 'if [[ ! -f /var/data/Dofus/Dofus ]]; then'
     - '  user-install'
     - 'fi'
-    - 'pwd=/var/data/Dofus /var/data/Dofus/Dofus "$@"'
+    - export pwd=/var/data/Dofus
+    - padsp /var/data/Dofus/Dofus "$@"
 
 - name: resources
   buildsystem: simple

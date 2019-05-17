@@ -71,7 +71,6 @@ modules:
   build-commands:
   - install -d /app/dxvk
   - cp -R ./* "${DXVK_HOME}/"
-  - ls . /app/dxvk
   sources:
   - type: archive
     url: https://github.com/doitsujin/dxvk/releases/download/v1.2/dxvk-1.2.tar.gz

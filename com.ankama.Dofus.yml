@@ -22,13 +22,14 @@ finish-args:
 - "--env=DXVK_STATE_CACHE=1"
 - "--env=DXVK_STATE_CACHE_PATH=/var/data/cache_dxvk"
 - "--env=DXVK_HOME=/app/dxvk"
+- "--env=DXVK_CONFIG_FILE=/app/dxvk/dxvk.conf"
 - "--env=DXVK_HUD=0"
 - "--env=__GL_THREADED_OPTIMIZATIONS=0"
 command: "start"
 
 build-options:
-  cflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
-  cxxflags: -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -msse3 -mssse3 -mfpmath=sse
+  cflags: -mtune=skylake -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -msse4.1 -msse4.2 -mfpmath=sse -msse2avx -mavx -mavx2 -maes -mbmi -mbmi2 -mxsave -mxsavec -mxsaveopt -mxsaves
+  cxxflags: -mtune=skylake -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -msse4.1 -msse4.2 -mfpmath=sse -msse2avx -mavx -mavx2 -maes -mbmi -mbmi2 -mxsave -mxsavec -mxsaveopt -mxsaves
   ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
   prefix: "/app"
   libdir: "/app/lib"
@@ -52,6 +53,7 @@ modules:
   - --without-opencl
   - --without-pcap
   - --without-udev
+  - --with-pthread
   cleanup:
   - /app/wine/app/wine/share/man
   - /app/wine/share/applications
@@ -70,12 +72,16 @@ modules:
   buildsystem: simple
   build-commands:
   - install -d /app/dxvk
-  - cp -R ./* "${DXVK_HOME}/"
-  - ls . /app/dxvk
+  - cp -R ./* "/app/dxvk"
+  - install -Dm555 dxvk.conf /app/dxvk/dxvk.conf
   sources:
   - type: archive
     url: https://github.com/doitsujin/dxvk/releases/download/v1.2/dxvk-1.2.tar.gz
     sha256: 414751a810143ced34d1f4f0eb2a40e79b4c9726318994b244b70d1b3a6f8b32
+  - type: script
+    dest-filename: dxvk.conf
+    commands:
+    - # dxvk config
 
 #(flatpak 1.0.2)per user installation cannot be handled by apply_extra
 - name: dofus

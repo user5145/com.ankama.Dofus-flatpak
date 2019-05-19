@@ -16,7 +16,6 @@ finish-args:
 - "--env=PATH=/app/wine/bin:/app/bin:/usr/bin"
 - "--device=all"
 - "--allow=multiarch"
-- "--extra-data=dofus.tar.gz:a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296:12821292:12821292:http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz"
 - "--env=GTK_PATH=/app/lib/gtk-2.0"
 - "--env=G_FILENAME_ENCODING=UTF-8"
 - "--env=DXVK_STATE_CACHE=1"
@@ -25,16 +24,30 @@ finish-args:
 - "--env=DXVK_CONFIG_FILE=/app/dxvk/dxvk.conf"
 - "--env=DXVK_HUD=0"
 - "--env=__GL_THREADED_OPTIMIZATIONS=0"
+- "--env=__GL_SHADER_DISK_CACHE=1"
+- "--env=__GL_SHADER_DISK_CACHE_PATH=/var/data/cache_nv"
+- "--extra-data=dofus.tar.gz:a57149c0d0ad8c44a3be0d2ada381d8032e923e55d0225243aece626e4d45296:12821292:12821292:http://dl.ak.ankama.com/games/installers/dofus-x86.tar.gz"
 command: "start"
 
 build-options:
-  cflags: -mtune=skylake -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -mfpmath=sse
-  cxxflags: -mtune=skylake -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -mfpmath=sse
+  cflags: -mtune=generic -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -mfpmath=sse
+  cxxflags: -mtune=generic -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -mfpmath=sse
   ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
   prefix: "/app"
   libdir: "/app/lib"
 
 modules:
+- name: nvidia
+  buildsystem: simple
+  build-commands:
+  - install -Dm555 create_nvidia_cache_dir /app/bin/create_nvidia_cache_dir
+  sources:
+  - type: script
+    dest-filename: create_nvidia_cache_dir
+    commands:
+    - # dxvk config
+    - mkdir -p /var/data/cache_nv
+
 - name: wine-win32
   config-opts:
   - --disable-win64
@@ -98,6 +111,7 @@ modules:
     dest-filename: user-install
     commands:
     - "tar -xf /app/extra/dofus.tar.gz -C /var/data"
+    - create_nvidia_cache_dir
     - wineboot
     - script-clean-windows-ver
     - script-set-windows-ver

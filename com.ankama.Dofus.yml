@@ -28,8 +28,8 @@ finish-args:
 command: "start"
 
 build-options:
-  cflags: -mtune=skylake -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -msse4.1 -msse4.2 -mfpmath=sse -msse2avx -mavx -mavx2 -maes -mbmi -mbmi2 -mxsave -mxsavec -mxsaveopt -mxsaves
-  cxxflags: -mtune=skylake -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -msse4.1 -msse4.2 -mfpmath=sse -msse2avx -mavx -mavx2 -maes -mbmi -mbmi2 -mxsave -mxsavec -mxsaveopt -mxsaves
+  cflags: -mtune=skylake -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -mfpmath=sse
+  cxxflags: -mtune=skylake -O2 -pipe -fstack-protector-strong -fno-plt -frecord-gcc-switches -D_FORTIFY_SOURCE=2 -msse -msse2 -mssse3 -msse3 -mfpmath=sse
   ldflags: -fstack-protector-strong -Wl,-z,relro,-z,now
   prefix: "/app"
   libdir: "/app/lib"
@@ -76,8 +76,8 @@ modules:
   - install -Dm555 dxvk.conf /app/dxvk/dxvk.conf
   sources:
   - type: archive
-    url: https://github.com/doitsujin/dxvk/releases/download/v1.2/dxvk-1.2.tar.gz
-    sha256: 414751a810143ced34d1f4f0eb2a40e79b4c9726318994b244b70d1b3a6f8b32
+    url: https://github.com/doitsujin/dxvk/releases/download/v1.2.1/dxvk-1.2.1.tar.gz
+    sha256: 192beca0a34d13f101e9c2545d9533cf84830a23b566bed185c022ed754c3daa
   - type: script
     dest-filename: dxvk.conf
     commands:

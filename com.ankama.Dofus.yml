@@ -95,6 +95,7 @@ modules:
     dest-filename: dxvk.conf
     commands:
     - # dxvk config
+    - dxgi.nvapiHack = False
 
 #(flatpak 1.0.2)per user installation cannot be handled by apply_extra
 - name: dofus

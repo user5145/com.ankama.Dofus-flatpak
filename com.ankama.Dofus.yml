@@ -155,7 +155,7 @@ modules:
     - '  user-install'
     - 'fi'
     - export pwd=/var/data/Dofus
-    - padsp /var/data/Dofus/Dofus "$@"
+    - /var/data/Dofus/Dofus "$@"
 
 - name: resources
   buildsystem: simple

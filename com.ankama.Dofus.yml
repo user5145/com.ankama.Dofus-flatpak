@@ -89,8 +89,8 @@ modules:
   - install -Dm555 dxvk.conf /app/dxvk/dxvk.conf
   sources:
   - type: archive
-    url: https://github.com/doitsujin/dxvk/releases/download/v1.2.1/dxvk-1.2.1.tar.gz
-    sha256: 192beca0a34d13f101e9c2545d9533cf84830a23b566bed185c022ed754c3daa
+    url: https://github.com/doitsujin/dxvk/releases/download/v1.2.3/dxvk-1.2.3.tar.gz
+    sha256: 29ce345b3d962dbd8ec8bfda190635a21f62124e3e46f06e89aa2f3b1e230321
   - type: script
     dest-filename: dxvk.conf
     commands:

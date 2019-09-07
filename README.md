@@ -1,3 +1,6 @@
+# Moved to gitlab
+https://gitlab.com/flatpak-repo/com-ankama-Dofus-flatpak  
+
 # dofus-flatpak-wrapper   
 
 ## How to install/update (accordingly to the docs)  
